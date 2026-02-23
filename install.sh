@@ -1,25 +1,29 @@
 #!/bin/bash
 set -e
 
-SKILL_DIR="$HOME/.claude/skills/tutor-setup"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+SKILLS=("tutor-setup" "tutor")
 
-if [ -d "$SKILL_DIR" ]; then
-  echo "tutor-setup skill already exists at $SKILL_DIR"
-  printf "Overwrite? (y/N): "
-  read -r answer
-  if [ "$answer" != "y" ] && [ "$answer" != "Y" ]; then
-    echo "Installation cancelled."
-    exit 0
+for skill in "${SKILLS[@]}"; do
+  SKILL_DIR="$HOME/.claude/skills/$skill"
+
+  if [ -d "$SKILL_DIR" ]; then
+    echo "$skill skill already exists at $SKILL_DIR"
+    printf "Overwrite? (y/N): "
+    read -r answer
+    if [ "$answer" != "y" ] && [ "$answer" != "Y" ]; then
+      echo "Skipping $skill."
+      continue
+    fi
   fi
-fi
 
-mkdir -p "$SKILL_DIR/references"
-cp "$SCRIPT_DIR/skill/SKILL.md" "$SKILL_DIR/"
-cp "$SCRIPT_DIR/skill/references/"* "$SKILL_DIR/references/"
+  mkdir -p "$SKILL_DIR/references"
+  cp "$SCRIPT_DIR/skills/$skill/SKILL.md" "$SKILL_DIR/"
+  cp "$SCRIPT_DIR/skills/$skill/references/"* "$SKILL_DIR/references/"
+  echo "Installed $skill to $SKILL_DIR"
+done
 
-echo "tutor-setup skill installed to $SKILL_DIR"
 echo ""
-echo "Usage:"
-echo "  In Claude Code, run: /tutor-setup [source-path]"
-echo "  Or invoke it from any project directory for Codebase Mode."
+echo "Done! Usage in Claude Code:"
+echo "  /tutor-setup  — Generate a StudyVault from documents or code"
+echo "  /tutor        — Start an interactive quiz session"
