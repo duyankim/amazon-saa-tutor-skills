@@ -39,8 +39,15 @@ On invocation, detect mode automatically:
 ### Phase D1: Source Discovery & Extraction
 
 1. **Auto-scan CWD** for `**/*.pdf`, `**/*.txt`, `**/*.md`, `**/*.html`, `**/*.epub` (exclude `node_modules/`, `.git/`, `dist/`, `build/`, `StudyVault/`). Present for user confirmation.
-2. **Extract text**: PDF → `pdftotext`, URL → WebFetch, others → Read directly.
-3. **Read extracted text fully** — understand scope, structure, depth.
+2. **Extract text (MANDATORY tools)**:
+   - **PDF → `pdftotext` CLI ONLY** (run via Bash tool). NEVER use the Read tool directly on PDF files — it renders pages as images and wastes 10-50x more tokens. Convert to `.txt` first, then Read the `.txt` file.
+     ```bash
+     pdftotext "source.pdf" "/tmp/source.txt"
+     ```
+   - If `pdftotext` is not installed, install it first: `brew install poppler` (macOS) or `apt-get install poppler-utils` (Linux).
+   - URL → WebFetch
+   - Other formats (`.md`, `.txt`, `.html`) → Read directly.
+3. **Read extracted `.txt` files** — understand scope, structure, depth. Work exclusively from the converted text, never from the raw PDF.
 4. **Source Content Mapping (MANDATORY for multi-file sources)**:
    - Read **cover page + TOC + 3+ sample pages from middle/end** for EVERY source file
    - **NEVER assume content from filename** — file numbering often ≠ chapter numbering
