@@ -38,7 +38,7 @@ On invocation, detect mode automatically:
 
 ### Phase D1: Source Discovery & Extraction
 
-1. **Auto-scan CWD** for `**/*.pdf`, `**/*.txt`, `**/*.md`, `**/*.html`, `**/*.epub` (exclude `node_modules/`, `.git/`, `dist/`, `build/`, `StudyVault/`). Present for user confirmation.
+1. **Auto-scan CWD** for `**/*.pdf`, `**/*.txt`, `**/*.md`, `**/*.html`, `**/*.epub`, `**/*.json` (exclude `node_modules/`, `.git/`, `dist/`, `build/`, `StudyVault/`). Present for user confirmation.
 2. **Extract text (MANDATORY tools)**:
    - **PDF → `pdftotext` CLI ONLY** (run via Bash tool). NEVER use the Read tool directly on PDF files — it renders pages as images and wastes 10-50x more tokens. Convert to `.txt` first, then Read the `.txt` file.
      ```bash
@@ -46,6 +46,7 @@ On invocation, detect mode automatically:
      ```
    - If `pdftotext` is not installed, install it first: `brew install poppler` (macOS) or `apt-get install poppler-utils` (Linux).
    - URL → WebFetch
+   - **JSON question bank** (array of `{id, question, choices, answers, explanations}`): Read directly. Treat as a pre-existing question bank — extract AWS service domains from the questions, group by topic, and use `explanations` as primary knowledge source for concept notes. Do NOT regenerate questions already in the JSON; instead reference them in practice files.
    - Other formats (`.md`, `.txt`, `.html`) → Read directly.
 3. **Read extracted `.txt` files** — understand scope, structure, depth. Work exclusively from the converted text, never from the raw PDF.
 4. **Source Content Mapping (MANDATORY for multi-file sources)**:

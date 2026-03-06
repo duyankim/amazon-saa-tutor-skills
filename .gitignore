@@ -1,3 +1,9 @@
 .DS_Store
 *.swp
 *.swo
+
+# Local question bank (copyright)
+saa_questions.json
+
+# Local Claude settings
+.claude/settings.local.json
